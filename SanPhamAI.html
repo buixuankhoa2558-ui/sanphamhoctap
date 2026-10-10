@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng hợp đường dẫn ôn THPT</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Container kính mờ (Glassmorphism) */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2.5rem 2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .combo-section {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-combo {
+            padding: 1rem 2.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border: none;
+            color: var(--primary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow:  5px 5px 10px #d1d1d1, -5px -5px 10px #ffffff;
+        }
+
+        .btn-combo:hover {
+            transform: translateY(-3px);
+            box-shadow:  8px 8px 15px #d1d1d1, -8px -8px 15px #ffffff;
+        }
+
+        .btn-combo.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: inset 5px 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .subjects-section {
+            display: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .subjects-section.active {
+            display: flex;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .btn-subject {
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            background-color: #ffffff;
+            border: 2px solid transparent;
+            color: var(--text-main);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .btn-subject:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .btn-subject.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .content-section {
+            display: none;
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .content-section.active {
+            display: block;
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .content-section h2 {
+            color: var(--primary);
+            border-bottom: 3px dashed #c7d2fe;
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .content-section h3 {
+            color: #312e81;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content-section h3::before {
+            content: '📌';
+        }
+
+        .chapter-box {
+            background: linear-gradient(to right, #f8fafc, #ffffff);
+            border-left: 5px solid var(--primary);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            transition: transform 0.2s ease;
+        }
+
+        .chapter-box:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .content-section a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 2px 5px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .content-section a:hover {
+            background: #dbeafe;
+            text-decoration: underline;
+        }
+
+        /* Nút phát nhạc nổi ở góc */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .btn-music {
+            background: #ffffff;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-weight: bold;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-music:hover {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Biểu tượng sách chạy quanh viền */
+        .border-books {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Không cho click trúng */
+            z-index: 9999;
+        }
+
+        .border-books span {
+            position: absolute;
+            font-size: 32px;
+            animation: borderRun 24s linear infinite;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        /* Tạo quỹ đạo chạy quanh mép màn hình */
+        @keyframes borderRun {
+            0% { top: 10px; left: 10px; transform: rotate(0deg); }
+            24% { top: 10px; left: calc(100vw - 50px); transform: rotate(15deg); }
+            25% { top: 10px; left: calc(100vw - 50px); transform: scaleX(-1) rotate(0deg); } /* Lật hướng */
+            49% { top: calc(100vh - 50px); left: calc(100vw - 50px); transform: scaleX(-1) rotate(-15deg); }
+            50% { top: calc(100vh - 50px); left: calc(100vw - 50px); transform: scaleX(-1) rotate(0deg); }
+            74% { top: calc(100vh - 50px); left: 10px; transform: scaleX(-1) rotate(15deg); }
+            75% { top: calc(100vh - 50px); left: 10px; transform: rotate(0deg); } /* Lật lại hướng */
+            99% { top: 10px; left: 10px; transform: rotate(-15deg); }
+            100% { top: 10px; left: 10px; transform: rotate(0deg); }
+        }
+
+        /* Giãn cách các cuốn sách chạy nối đuôi nhau */
+        .border-books span:nth-child(1) { animation-delay: 0s; content: "📚"; }
+        .border-books span:nth-child(2) { animation-delay: -4.8s; }
+        .border-books span:nth-child(3) { animation-delay: -9.6s; }
+        .border-books span:nth-child(4) { animation-delay: -14.4s; }
+        .border-books span:nth-child(5) { animation-delay: -19.2s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Nhạc nền Lofi thư giãn và Hiệu ứng âm thanh click -->
+<audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+</audio>
+<audio id="click-sound">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_73133b006a.mp3?filename=pop-click-3-4318.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Sách chạy quanh viền trang web -->
+<div class="border-books">
+    <span>📚</span>
+    <span>📖</span>
+    <span>📘</span>
+    <span>📝</span>
+    <span>📗</span>
+</div>
+
+<div class="container">
+    <h1>🎓 Tổng hợp đường dẫn ôn THPT</h1>
+    
+    <div class="combo-section">
+        <button class="btn-combo" onclick="showSubjects('A00', this)">Tổ hợp A00</button>
+        <button class="btn-combo" onclick="showSubjects('A01', this)">Tổ hợp A01</button>
+    </div>
+
+    <div id="subjects-container" class="subjects-section">
+        <!-- Các nút môn học sẽ được Javascript render tại đây -->
+    </div>
+
+    <div id="content-container" class="content-section">
+        <!-- Nội dung tài liệu ôn tập sẽ hiển thị tại đây -->
+    </div>
+</div>
+
+<!-- Nút điều khiển nhạc -->
+<div class="music-player">
+    <button id="btn-toggle-music" class="btn-music" onclick="toggleMusic()">
+        🎧 Bật nhạc thư giãn
+    </button>
+</div>
+
+<!-- ================= DATA TEMPLATES ================= -->
+
+<!-- Ngữ Văn -->
+<template id="tpl-van">
+    <h2>📖 Môn Ngữ Văn</h2>
+    
+    <div class="chapter-box">
+        <h3>HOCMAI (Kỹ năng & Chuyên đề NLVH)</h3>
+        <p>Hướng dẫn cấu trúc đoạn văn, bài văn nghị luận phân tích tư tưởng nghệ thuật, cách tạo mở bài, kết bài và phân tích tác phẩm:</p>
+        <ul>
+            <li><a href="#" target="_blank">HOCMAI Blog - Chuyên đề Văn học & Kỹ năng làm bài</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>VietJack (Chuyên đề rèn luyện đoạn văn/bài văn NLVH)</h3>
+        <p>Cung cấp các thao tác lập luận, mở rộng và các bài làm mẫu chuyên sâu:</p>
+        <ul>
+            <li><a href="#" target="_blank">VietJack - Luyện tập viết đoạn văn nghị luận & Văn học</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>Gồm hai dạng đề trọng tâm: tư tưởng đạo lý và hiện tượng đời sống</h3>
+        <p><strong>Phương pháp viết đoạn văn 200 chữ & Bài văn NLXH (HOCMAI Butbi):</strong></p>
+        <ul>
+            <li><a href="#" target="_blank">Kỹ năng viết đoạn văn nghị luận xã hội - Butbi Hocmai</a></li>
+        </ul>
+        <p><strong>Công thức triển khai & Dẫn chứng đa dạng (VietJack):</strong> Cung cấp dàn ý chuẩn (Giải thích – Bàn luận – Chứng minh – Mở rộng/Phản đề – Bài học):</p>
+        <ul>
+            <li><a href="#" target="_blank">VietJack - Công thức viết văn Nghị luận xã hội và bộ dẫn chứng</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>Hệ thống lý thuyết về tiếng Việt và lý luận văn học cơ bản</h3>
+        <p>(Bao gồm biện pháp tu từ, phong cách ngôn ngữ, liên kết câu)</p>
+        <p><strong>Học Văn Chị Hiên:</strong> Kênh chuyên sâu về chia sẻ tài liệu, sơ đồ tư duy, lý luận văn học và mẹo liên hệ mở rộng:</p>
+        <ul>
+            <li><a href="#" target="_blank">Học Văn Chị Hiên - Trang tài liệu & phương pháp Ngữ văn</a></li>
+        </ul>
+        <p><strong>Loigiaihay - Tri thức Ngữ văn căn bản:</strong> Tóm tắt kiến thức SGK các lớp theo từng thể loại và bài học:</p>
+        <ul>
+            <li><a href="#" target="_blank">Loigiaihay - Soạn văn và kiến thức Văn học nền tảng</a></li>
+        </ul>
+    </div>
+</template>
+
+<!-- Toán -->
+<template id="tpl-toan">
+    <h2>📐 Môn Toán</h2>
+    
+    <div class="chapter-box">
+        <h3>Trọn bộ công thức Toán 12 (Chương trình mới)</h3>
+        <p>Chứa đầy đủ các quy tắc xét tính đơn điệu, cực trị hàm số, công thức tọa độ không gian (Oxyz) và các số đặc trưng đo mức độ phân tán cho mẫu số liệu ghép nhóm.</p>
+        <ul>
+            <li><a href="https://vietjack.com/tai-lieu-mon-toan/tron-bo-cong-thuc-toan-lop-12.jsp" target="_blank">vietjack.com/tai-lieu-mon-toan/tron-bo-cong-thuc-toan-lop-12.jsp</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>Chuyên đề Toán thực tế lớp 12</h3>
+        <p>Hướng dẫn giải quyết các bài toán ứng dụng thực tiễn rất phổ biến trong đề thi mới, bao gồm ứng dụng đạo hàm, bài toán tọa độ, xác suất và thống kê.</p>
+        <ul>
+            <li><a href="https://vietjack.com/on-thi-dai-hoc/chuyen-de-toan-thuc-te-lop-12.jsp" target="_blank">vietjack.com/on-thi-dai-hoc/chuyen-de-toan-thuc-te-lop-12.jsp</a></li>
+        </ul>
+    </div>
+</template>
+
+<!-- Vật Lí -->
+<template id="tpl-li">
+    <h2>⚡ Môn Vật Lí</h2>
+    
+    <div class="chapter-box">
+        <h3>1. Chương: Vật lí nhiệt (Nhiệt học)</h3>
+        <p><strong>Nội dung cốt lõi:</strong> Mô hình động học phân tử, nội năng, định luật 1 nhiệt động lực học, nhiệt dung riêng, nhiệt nóng chảy riêng và nhiệt hóa hơi riêng.</p>
+        <ul>
+            <li><strong>VietJack</strong> – Chuyên đề Vật lí nhiệt: <a href="#" target="_blank">VietJack - Vật lí 12 Chương 1: Vật lí nhiệt</a></li>
+            <li><strong>Loigiaihay</strong> – Hướng dẫn giải chi tiết: <a href="#" target="_blank">Loigiaihay - Chuyên mục Vật lí 12: Vật lí nhiệt</a></li>
+            <li><strong>Tuyensinh247</strong> – Video bài giảng: <a href="#" target="_blank">Tuyensinh247 - Học tốt Vật lí 12 Chuyên đề Nhiệt</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>2. Chương: Khí lí tưởng</h3>
+        <p><strong>Nội dung cốt lõi:</strong> Thuyết động học phân tử chất khí, các định luật thực nghiệm về chất khí, phương trình trạng thái khí lí tưởng.</p>
+        <ul>
+            <li><strong>VietJack</strong> – Lý thuyết & dạng bài tập: <a href="#" target="_blank">VietJack - Vật lí 12 Chương 2: Khí lí tưởng</a></li>
+            <li><strong>Vndoc</strong> – Bộ câu hỏi trắc nghiệm: <a href="#" target="_blank">Vndoc - Chuyên đề Khí lí tưởng Vật lí 12</a></li>
+            <li><strong>HOCMAI Butbi</strong> – Phương pháp giải: <a href="#" target="_blank">HOCMAI Butbi - Chuyên đề chất khí & khí lí tưởng</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>3. Chương: Từ trường & Điện từ trường</h3>
+        <p><strong>Nội dung cốt lõi:</strong> Từ trường, lực từ, cảm ứng từ, hiện tượng cảm ứng điện từ, định luật Faraday và Lenz.</p>
+        <ul>
+            <li><strong>VietJack</strong> – Toàn bộ lý thuyết: <a href="#" target="_blank">VietJack - Vật lí 12 Chương 3: Từ trường</a></li>
+            <li><strong>Loigiaihay</strong> – Hệ thống bài tập: <a href="#" target="_blank">Loigiaihay - Chuyên đề Từ trường & Hiện tượng cảm ứng điện từ</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>4. Chương: Vật lí hạt nhân</h3>
+        <p><strong>Nội dung cốt lõi:</strong> Cấu tạo hạt nhân, năng lượng liên kết, độ hụt khối, phản ứng phân hạch/nhiệt hạch, phóng xạ.</p>
+        <ul>
+            <li><strong>VietJack</strong> – Chuyên đề hạt nhân: <a href="#" target="_blank">VietJack - Vật lí 12 Chương 4: Vật lí hạt nhân</a></li>
+            <li><strong>Vndoc</strong> – Tổng hợp bài tập: <a href="#" target="_blank">Vndoc - Tài liệu chuyên đề Vật lí hạt nhân 12</a></li>
+            <li><strong>ThuVienVatLy</strong> – Ngân hàng tài liệu: <a href="#" target="_blank">Thư viện Vật lý - Diễn đàn và tài liệu ôn luyện</a></li>
+        </ul>
+    </div>
+</template>
+
+<!-- Hóa Học -->
+<template id="tpl-hoa">
+    <h2>🧪 Môn Hóa Học</h2>
+    <p>Chương trình Hóa học 12 hiện hành (Chương trình GDPT 2018) có 8 chương cốt lõi. Dưới đây là hệ thống các liên kết tổng hợp lý thuyết trọng tâm (Kết nối tri thức & Chân trời sáng tạo):</p>
+    
+    <div class="chapter-box">
+        <h3>Chương 1: Ester - Lipid</h3>
+        <p>Cấu tạo, danh pháp, tính chất vật lí/hóa học của Ester và Lipid. Các phản ứng xà phòng hóa.</p>
+        <ul>
+            <li><a href="#" target="_blank">VietJack: Lý thuyết Chương 1</a></li>
+            <li><a href="#" target="_blank">Loigiaihay: Kiến thức Ester - Lipid</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>Chương 2: Carbohydrate</h3>
+        <p>Cấu trúc phân tử và tính chất của: Monosaccharide, Disaccharide, và Polysaccharide.</p>
+        <ul>
+            <li><a href="#" target="_blank">VietJack: Lý thuyết Chương 2</a></li>
+            <li><a href="#" target="_blank">Loigiaihay: Kiến thức Carbohydrate</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>Chương 3: Hợp chất chứa nitrogen</h3>
+        <p>Đặc điểm cấu tạo Amine, tính lưỡng tính của Amino acid, liên kết peptide của Protein.</p>
+        <ul>
+            <li><a href="#" target="_blank">VietJack: Lý thuyết Chương 3</a></li>
+            <li><a href="#" target="_blank">Loigiaihay: Kiến thức Hợp chất chứa Nitrogen</a></li>
+        </ul>
+    </div>
+
+    <!-- Các chương Hóa học khác được rút gọn trong thiết kế để người dùng tiện theo dõi -->
+    <div class="chapter-box">
+        <h3>Chương 4-8: Polymer, Pin điện, Kim loại & Phức chất</h3>
+        <ul>
+            <li><a href="#" target="_blank">VietJack: Tổng ôn Lý thuyết Polymer, Pin điện và Kim loại</a></li>
+            <li><a href="#" target="_blank">Loigiaihay: Đại cương Kim loại & Kim loại chuyển tiếp</a></li>
+        </ul>
+    </div>
+</template>
+
+<!-- Tiếng Anh -->
+<template id="tpl-anh">
+    <h2>🇬🇧 Môn Tiếng Anh</h2>
+    
+    <div class="chapter-box">
+        <h3>1. Hệ thống 12 thì trong tiếng Anh (Tenses)</h3>
+        <p><strong>Nội dung cốt lõi:</strong> Công thức, cách dùng, dấu hiệu nhận biết, sự phối hợp thì và các bẫy thường gặp.</p>
+        <ul>
+            <li><a href="#" target="_blank">LangGo - Bảng tổng hợp 12 thì trong tiếng Anh</a></li>
+            <li><a href="#" target="_blank">VietJack - Chuyên đề 12 thì trong tiếng Anh</a></li>
+            <li><a href="#" target="_blank">ZIM - Sự phối hợp thì và bài tập vận dụng</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>2. Các cấu trúc ngữ pháp cơ bản và trọng tâm</h3>
+        <p>Câu bị động, câu điều kiện, mệnh đề quan hệ, câu gián tiếp, câu so sánh và đảo ngữ.</p>
+        <ul>
+            <li><a href="#" target="_blank">Vndoc - Ngữ pháp ôn thi tốt nghiệp môn Tiếng Anh</a></li>
+            <li><a href="#" target="_blank">ELSA Speak - Tổng hợp cấu trúc ngữ pháp tiếng Anh thông dụng</a></li>
+        </ul>
+    </div>
+
+    <div class="chapter-box">
+        <h3>3. Kiến thức về Hình thức của từ (Word Form)</h3>
+        <p><strong>Nội dung cốt lõi:</strong> Nhận diện vị trí từ loại (Danh từ, Động từ, Tính từ, Trạng từ), tiền tố và hậu tố.</p>
+        <ul>
+            <li><a href="#" target="_blank">ZIM - Tổng hợp quy tắc cấu tạo từ (Word Form)</a></li>
+            <li><a href="#" target="_blank">IELTS Fighter - Quy tắc cấu tạo từ và dạng bài Word Form</a></li>
+            <li><a href="#" target="_blank">VietJack - Chuyên đề Cấu tạo từ và trật tự từ</a></li>
+        </ul>
+    </div>
+</template>
+
+<script>
+    // Hàm phát âm thanh click
+    function playClick() {
+        const clickSound = document.getElementById('click-sound');
+        clickSound.currentTime = 0; // Trả về đầu file để có thể click liên tục
+        clickSound.play().catch(e => console.log("Trình duyệt chặn autoplay"));
+    }
+
+    // Gắn âm thanh click vào tất cả các thẻ a
+    document.addEventListener('click', function(e) {
+        if(e.target.tagName.toLowerCase() === 'a') {
+            playClick();
+        }
+    });
+
+    const dataStructure = {
+        'A00': [
+            { id: 'van', name: '📖 Văn' },
+            { id: 'toan', name: '📐 Toán' },
+            { id: 'li', name: '⚡ Vật Lí' },
+            { id: 'hoa', name: '🧪 Hóa Học' }
+        ],
+        'A01': [
+            { id: 'van', name: '📖 Văn' },
+            { id: 'toan', name: '📐 Toán' },
+            { id: 'li', name: '⚡ Vật Lí' },
+            { id: 'anh', name: '🇬🇧 Tiếng Anh' }
+        ]
+    };
+
+    function showSubjects(combo, btnElement) {
+        playClick(); // Phát âm thanh
+        
+        // Reset styles for combo buttons
+        document.querySelectorAll('.btn-combo').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+
+        // Hide content container when switching combos
+        document.getElementById('content-container').classList.remove('active');
+
+        // Render subjects based on selected combo
+        const container = document.getElementById('subjects-container');
+        container.innerHTML = '';
+        
+        dataStructure[combo].forEach(subject => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-subject';
+            btn.textContent = subject.name;
+            btn.onclick = () => showContent(subject.id, btn);
+            container.appendChild(btn);
+        });
+
+        container.classList.add('active');
+    }
+
+    function showContent(subjectId, btnElement) {
+        playClick(); // Phát âm thanh
+
+        // Highlight active subject button
+        document.querySelectorAll('.btn-subject').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+
+        // Fetch template content and insert into container
+        const template = document.getElementById(`tpl-${subjectId}`);
+        const contentContainer = document.getElementById('content-container');
+        
+        if(template) {
+            contentContainer.innerHTML = template.innerHTML;
+            contentContainer.classList.add('active');
+        }
+    }
+
+    // Điều khiển nhạc nền thư giãn
+    let isMusicPlaying = false;
+    function toggleMusic() {
+        playClick(); // Phát âm thanh click của nút
+        const bgm = document.getElementById('bg-music');
+        const btn = document.getElementById('btn-toggle-music');
+        
+        if(isMusicPlaying) {
+            bgm.pause();
+            btn.innerHTML = '🎧 Bật nhạc thư giãn';
+            btn.style.background = '#ffffff';
+            btn.style.color = 'var(--primary)';
+            isMusicPlaying = false;
+        } else {
+            bgm.volume = 0.5; // Giảm âm lượng nhạc nền xuống 50% để không làm chói tai
+            bgm.play();
+            btn.innerHTML = '⏸️ Tắt nhạc';
+            btn.style.background = 'var(--primary)';
+            btn.style.color = 'white';
+            isMusicPlaying = true;
+        }
+    }
+</script>
+
+</body>
+</html>
